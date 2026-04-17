@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
    },
    password : {
     type: String , 
-    require : [true , "Password is reqired"]
+    require : [true , "Password is reqired"],
+    select:false
    }
 })
 
