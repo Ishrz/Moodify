@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
-
+import { captureMood } from "./util";
 const FaceExpression = () => {
   const videoRef = useRef(null);
   const landmarkerRef = useRef(null);
@@ -9,6 +9,7 @@ const FaceExpression = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   // 1. Initialize MediaPipe Landmarker
+
   useEffect(() => {
     const initLandmarker = async () => {
       const vision = await FilesetResolver.forVisionTasks(
@@ -61,7 +62,6 @@ const FaceExpression = () => {
         results.faceBlendshapes[0].categories.forEach((shape) => {
           scores[shape.categoryName] = shape.score;
         });
-        // Store the newest data in the Ref (no state update here)
         latestScores.current = scores;
       }
     }
@@ -69,33 +69,7 @@ const FaceExpression = () => {
   };
 
   // 3. Logic Triggered by Button Click
-  const captureMood = () => {
-    const scores = latestScores.current;
-
-    if (!scores || Object.keys(scores).length === 0) {
-      setExpression("No face detected!");
-      return;
-    }
-
-    // Logic Tree
-    if (scores["mouthSmileLeft"] > 0.3 || scores["mouthSmileRight"] > 0.3) {
-      setExpression("Smiling! 😊");
-    } else if (scores["eyeBlinkLeft"] > 0.3 && scores["eyeBlinkRight"] > 0.3) {
-      setExpression("Blinking/Eyes Closed");
-    } else if (scores["browInnerUp"] > 0.2 || scores["jawOpen"] > 0.17) {
-      setExpression("Surprised! 😲");
-    } else if (
-      (scores["browInnerUp"] > 0.025 &&
-        (scores["mouthFrownLeft"] > 0.0019 ||
-          scores["mouthFrownRight"] > 0.15)) ||
-      scores["mouthPucker"] > 0.027 ||
-      scores["browInnerUp"] > 0.2
-    ) {
-      setExpression("Sad 😢");
-    } else {
-      setExpression("Neutral 😐");
-    }
-  };
+  
 
   return (
     <div
@@ -127,7 +101,7 @@ const FaceExpression = () => {
 
       <div style={{ marginTop: "20px" }}>
         <button
-          onClick={captureMood}
+          onClick={()=>captureMood( {latestScores ,setExpression})}
           disabled={!isLoaded}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}

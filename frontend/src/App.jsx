@@ -1,4 +1,4 @@
-import FaceExpression from "./features/pages/components/FaceExpression";
+import FaceExpression from "./features/expression/pages/components/FaceExpression";
 
 
 const App = () => {
