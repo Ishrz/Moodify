@@ -1,5 +1,6 @@
 const UserModel = require("../models/user.model");
 const BlacklistModel = require("../models/blacklist.model");
+const redis = require("../config/cache.js")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -121,9 +122,17 @@ const logOut = async (req, res) => {
 
   res.clearCookie("token");
 
-  const savedToken = await BlacklistModel.create({
-    token,
-  });
+
+  //saving logOut token in mongoDB in Blacklist document
+//   const savedToken = await BlacklistModel.create({
+//     token,
+//   });
+
+//   saving logOut token in redis
+if (token) {
+  const redisData = await redis.set(token, Date.now());
+}
+
 
   return res.status(200).json({
     message: "User LogOut Successfuly",

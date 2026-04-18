@@ -1,5 +1,6 @@
 const jwt =require("jsonwebtoken")
 const BlacklistModel = require("../models/blacklist.model")
+const redis = require("../config/cache.js")
 
 
 const authUser = async (req, res , next) =>{
@@ -11,10 +12,13 @@ const authUser = async (req, res , next) =>{
         })
     }
 
-    const isTokenBlackListed = await BlacklistModel.findOne({token:token})
+    //checking blacklisted token in mongoDB database
+    // const isTokenBlackListed = await BlacklistModel.findOne({token:token})
 
-    // console.log("from auth middleware")
-    // console.log(isTokenBlackListed)
+    //checking blacklisted token in Redis database
+    const isTokenBlackListed = await redis.get(token)
+  
+
 
     if(isTokenBlackListed){
         return res.status(401).json({
