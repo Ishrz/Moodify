@@ -120,9 +120,21 @@ const login = async (req, res) => {
 
 }
 
+const getMe = async (req ,res) =>{
+    const userData = req.user
+
+    const user = await UserModel.findOne({_id:userData.id})
+    
+    res.status(200).json({
+        message:"user fetch successfuly",
+        user : user
+    })
+}
+
 
 module.exports = {
     registration,
-    login
+    login,
+    getMe
 
 }
