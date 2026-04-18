@@ -1,4 +1,5 @@
 const jwt =require("jsonwebtoken")
+const BlacklistModel = require("../models/blacklist.model")
 
 
 const authUser = async (req, res , next) =>{
@@ -10,6 +11,21 @@ const authUser = async (req, res , next) =>{
         })
     }
 
+    const isTokenBlackListed = await BlacklistModel.findOne({token:token})
+
+    // console.log("from auth middleware")
+    // console.log(isTokenBlackListed)
+
+    if(isTokenBlackListed){
+        return res.status(401).json({
+            message: "Unathorized access please login again"
+        })
+    }
+
+    
+
+    // return
+
     let decoded;
     try {
         decoded = await jwt.verify(token , process.env.JWT_SECRET)
@@ -20,7 +36,7 @@ const authUser = async (req, res , next) =>{
         })
     }
 
-    console.log(decoded)
+    
     req.user = decoded
     next()
 
