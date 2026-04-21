@@ -130,7 +130,7 @@ const logOut = async (req, res) => {
 
 //   saving logOut token in redis
 if (token) {
-  const redisData = await redis.set(token, Date.now());
+  const redisData = await redis.set(token, Date.now().toString() , "EX" , 60*60*24);
 }
 
 
