@@ -8,7 +8,7 @@ const authUser = require("../middlewares/auth.middleware.js")
 const router = Router()
 
 
-
+////http://localhost:4000/api/v1/auth
 router.post("/registration" , logger , registration )
 
 router.post("/login" ,logger, login)

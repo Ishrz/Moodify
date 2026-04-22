@@ -9,13 +9,18 @@ const authRoute = require("./routes/auth.route.js")
 
 const app = express()
 
+const corsOptions = {
+    origin:"http://localhost:5173",
+    credentials:true
+}
+
 // app.use(morgan('combined'))
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
 
-
-app.use("/api/v1" , authRoute)
+//http://localhost:4000/api/v1
+app.use("/api/v1/auth" , authRoute)
 
 
 
