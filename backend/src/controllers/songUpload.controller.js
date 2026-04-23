@@ -64,9 +64,19 @@ const getSong = async (req, res) => {
   try {
     const { mood } = req.query;
 
-    const song = await SongModel.findOne({
-      mood,
-    });
+
+    //random selection of document by aggeragation pipline
+    const songArray = await SongModel.aggregate([
+      { $match: { mood: mood } },
+      { $sample: { size: 1 } },
+    ]);
+
+    const song = songArray.length > 0 ? songArray[0] : null;
+
+    //normal document find by older order
+    // const song = await SongModel.findOne({
+    //   mood,
+    // });
 
     res.status(200).json({
       message: "song fetched successfuly",
