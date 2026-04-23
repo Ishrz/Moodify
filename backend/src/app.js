@@ -6,6 +6,7 @@ const logger = require("./middlewares/logger.js")
 
 //routes
 const authRoute = require("./routes/auth.route.js")
+const uploadSongRoute = require("./routes/song.route.js")
 
 const app = express()
 
@@ -19,9 +20,13 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
 
+//auth router
 //http://localhost:4000/api/v1
 app.use("/api/v1/auth" , authRoute)
 
+//upload router
+//http://localhost:4000/api/v1/song
+app.use("/api/v1/song" , uploadSongRoute)
 
 
 module.exports= app
