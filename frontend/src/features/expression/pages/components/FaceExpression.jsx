@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import { captureMood } from "./util";
+import { useSong } from "../../../Home/hooks/useSong";
 const FaceExpression = () => {
   const videoRef = useRef(null);
   const landmarkerRef = useRef(null);
@@ -8,6 +9,9 @@ const FaceExpression = () => {
   const [expression, setExpression] = useState("Not Captured Yet");
   const [isLoaded, setIsLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const { handleGetSong} = useSong()
+  
   // 1. Initialize MediaPipe Landmarker
 
   useEffect(() => {
@@ -69,6 +73,12 @@ const FaceExpression = () => {
   };
 
   // 3. Logic Triggered by Button Click
+
+  const handleClick = async () =>{
+    captureMood( {latestScores ,setExpression,expression})
+    await handleGetSong({mood : expression})
+    // console.log(expression)
+  }
   
 
   return (
@@ -101,7 +111,7 @@ const FaceExpression = () => {
 
       <div style={{ marginTop: "20px" }}>
         <button
-          onClick={()=>captureMood( {latestScores ,setExpression})}
+          onClick={handleClick}
           disabled={!isLoaded}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}

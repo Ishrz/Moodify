@@ -1,0 +1,28 @@
+// ============================================
+// Home Container Layout
+// ============================================
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.home-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 100px; // Reserve space for fixed player bar
+  
+  @media (max-width: 1024px) {
+    padding-bottom: 130px;
+  }
+  
+  @media (max-width: 768px) {
+    padding-bottom: 160px; // More space on mobile when player stacks
+  }
+  
+  @media (max-width: 480px) {
+    padding-bottom: 180px;
+  }
+}
