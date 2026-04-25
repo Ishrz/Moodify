@@ -75,8 +75,13 @@ const FaceExpression = () => {
   // 3. Logic Triggered by Button Click
 
   const handleClick = async () =>{
-    captureMood( {latestScores ,setExpression,expression})
-    await handleGetSong({mood : expression})
+    const currentMood=captureMood( {latestScores ,setExpression})
+    
+    if(currentMood !== "No face detected!" ){
+
+      await handleGetSong({mood : currentMood})
+    }
+    
     // console.log(expression)
   }
   
@@ -91,7 +96,7 @@ const FaceExpression = () => {
       }}
     >
       <h2>
-        Mood: <span style={{ color: "#007bff" }}>{expression}</span>
+        Mood Detected by Face Expression: <span style={{ color: "#007bff" }}>{expression}</span>
       </h2>
 
       <div style={{ position: "relative", display: "inline-block" }}>
